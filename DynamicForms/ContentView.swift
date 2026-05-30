@@ -566,40 +566,50 @@ struct MultiSelectDropdownView: View {
     private var multiSelectionSheet: some View {
         
         NavigationView {
-            
-            List(field.options ?? [], id: \.id) { option in
+            VStack(spacing:0){
                 
-                Button {
+                Text(field.label)
+                    .font(.headline)
+                    .foregroundColor(
+                        Color(hex: dynamicViewModel.form.theme.textColor)
+                    )
+                
+                
+                List(field.options ?? [], id: \.id) { option in
                     
-                    toggleSelection(option.id)
-                    
-                } label: {
-                    
-                    HStack {
+                    Button {
                         
-                        Text(option.label)
-                            .foregroundColor(
-                                Color(hex: dynamicViewModel.form.theme.textColor)
-                            )
+                        toggleSelection(option.id)
                         
-                        Spacer()
+                    } label: {
                         
-                        if selectedValues.contains(option.id) {
+                        HStack {
                             
-                            Image(systemName: "checkmark")
-                                .foregroundColor(.blue)
+                            Text(option.label)
+                                .foregroundColor(
+                                    Color(hex: dynamicViewModel.form.theme.textColor)
+                                )
+                            
+                            Spacer()
+                            
+                            if selectedValues.contains(option.id) {
+                                
+                                Image(systemName: "checkmark")
+                                    .foregroundColor(.blue)
+                            }
                         }
                     }
+                    .listRowBackground(
+                        Color(hex: dynamicViewModel.form.theme.backgroundColor)
+                    )
                 }
-                .listRowBackground(
+                .scrollContentBackground(.hidden)
+                .background(
                     Color(hex: dynamicViewModel.form.theme.backgroundColor)
                 )
+                
             }
-            .scrollContentBackground(.hidden)
-            .background(
-                Color(hex: dynamicViewModel.form.theme.backgroundColor)
-            )
-            .navigationTitle(field.label)
+            
             .toolbar {
                 
                 ToolbarItem(placement: .topBarTrailing) {
