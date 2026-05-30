@@ -62,13 +62,16 @@ struct DynamicFieldView: View {
     var body: some View {
         
         VStack(alignment: .leading){
+            
+            let options = field.options ?? []
+            
             switch field.type {
                 
             case .text:
                 textFieldView
                 
             case .dropdown:
-                let options = field.options ?? []
+                
                 if !options.isEmpty {
                     dropdownView
                 }
@@ -83,11 +86,15 @@ struct DynamicFieldView: View {
                 colorPickerView
             }
             
-            if !isFieldValid && buttonClicked{
+            if !isFieldValid &&
+                buttonClicked &&
+                (field.type != .dropdown || !options.isEmpty) {
                 
                 Text(field.errorMessage ?? "This field is required")
                     .font(.caption)
-                    .foregroundStyle(Color.init(hex: dynamicViewModel.form.theme.errorColor))
+                    .foregroundStyle(
+                        Color(hex: dynamicViewModel.form.theme.errorColor)
+                    )
             }
         }
     }
